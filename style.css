@@ -450,23 +450,10 @@ nav {
   border-radius: 50%;
 }
 
-/* Upload button overlay */
+/* Upload button overlay - hidden for normal users */
 .avatar-upload-label {
-  position: absolute;
-  inset: 8px;
-  border-radius: 50%;
-  z-index: 3;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 14px;
-  cursor: pointer;
-  background: transparent;
-  transition: var(--transition);
-  opacity: 0;
+  display: none;
 }
-
-.hero-avatar-wrap:hover .avatar-upload-label { opacity: 1; }
 
 .avatar-upload-label::before {
   content: '';

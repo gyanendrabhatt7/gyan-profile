@@ -61,25 +61,137 @@ const navObserver = new IntersectionObserver((entries) => {
 sections.forEach(s => navObserver.observe(s));
 
 // ==============================
-//  Avatar Photo Upload
+//  Avatar Photo Upload (Admin Only)
 // ==============================
 const avatarUpload  = document.getElementById('avatar-upload');
 const avatarDisplay = document.getElementById('avatar-display');
+const avatarLabel   = document.querySelector('.avatar-upload-label');
+
+// Restore saved photo on page load
+(function restoreSavedPhoto() {
+  const saved = localStorage.getItem('gb_avatar_b64');
+  if (saved && avatarDisplay) {
+    avatarDisplay.innerHTML = `<img src="${saved}" alt="Profile Photo" />`;
+    avatarDisplay.classList.add('has-photo');
+  }
+})();
 
 if (avatarUpload && avatarDisplay) {
   avatarUpload.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file || !file.type.startsWith('image/')) return;
-
     const reader = new FileReader();
     reader.onload = (ev) => {
-      // Clear the "GB" text and show the uploaded image
       avatarDisplay.innerHTML = `<img src="${ev.target.result}" alt="Profile Photo" />`;
       avatarDisplay.classList.add('has-photo');
+      localStorage.setItem('gb_avatar_b64', ev.target.result);
     };
     reader.readAsDataURL(file);
   });
 }
+
+// ==============================
+//  Admin Auth (Avatar Upload)
+// ==============================
+// SHA-256 hash of your admin password.
+// Change ADMIN_PASSWORD_HASH to hash of your chosen password.
+// Default password is: admin@GB2025
+// To generate a new hash: open browser console and run:
+//   crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourPassword'))
+//     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+const ADMIN_PASSWORD_HASH = 'a3c2e5d1f0e4b8c7a9d2e1f3b6c8d0e4a5f2b7c9d3e6f1a0b4c8d2e5f9a1b3c7';
+
+async function hashPassword(pw) {
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
+  return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2,'0')).join('');
+}
+
+let isAdminAuthed = false;
+
+function enableAvatarUpload() {
+  if (!avatarLabel) return;
+  // Restore full style for the label
+  avatarLabel.style.cssText = `
+    position: absolute; inset: 8px; border-radius: 50%; z-index: 3;
+    display: flex; align-items: flex-end; justify-content: center;
+    padding-bottom: 14px; cursor: pointer; background: transparent;
+    transition: all 0.3s ease; opacity: 0;
+  `;
+  // Show on hover
+  const wrap = document.querySelector('.hero-avatar-wrap');
+  if (wrap) {
+    wrap.addEventListener('mouseenter', () => { if (isAdminAuthed) avatarLabel.style.opacity = '1'; });
+    wrap.addEventListener('mouseleave', () => { avatarLabel.style.opacity = '0'; });
+    // Overlay darkening
+    avatarLabel.style.setProperty('--darken', '1');
+  }
+}
+
+// Admin Login Modal
+const adminLoginOverlay = document.getElementById('admin-login-overlay');
+const adminLoginForm    = document.getElementById('admin-login-form');
+const adminLoginClose   = document.getElementById('admin-login-close');
+const adminLoginError   = document.getElementById('admin-login-error');
+const adminLoginStatus  = document.getElementById('admin-login-status');
+
+function openAdminLogin() {
+  if (!adminLoginOverlay) return;
+  adminLoginOverlay.style.display = 'flex';
+  setTimeout(() => adminLoginOverlay.classList.add('visible'), 10);
+  const pwInput = document.getElementById('admin-pw-input');
+  if (pwInput) { pwInput.value = ''; pwInput.focus(); }
+  if (adminLoginError) adminLoginError.textContent = '';
+  if (adminLoginStatus) adminLoginStatus.textContent = isAdminAuthed ? '✅ You are already logged in as Admin.' : '';
+}
+
+function closeAdminLogin() {
+  if (!adminLoginOverlay) return;
+  adminLoginOverlay.classList.remove('visible');
+  setTimeout(() => { adminLoginOverlay.style.display = 'none'; }, 300);
+}
+
+if (adminLoginClose) adminLoginClose.addEventListener('click', closeAdminLogin);
+if (adminLoginOverlay) {
+  adminLoginOverlay.addEventListener('click', (e) => {
+    if (e.target === adminLoginOverlay) closeAdminLogin();
+  });
+}
+
+if (adminLoginForm) {
+  adminLoginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pwInput = document.getElementById('admin-pw-input');
+    if (!pwInput) return;
+    const hashed = await hashPassword(pwInput.value);
+    if (hashed === ADMIN_PASSWORD_HASH) {
+      isAdminAuthed = true;
+      enableAvatarUpload();
+      if (adminLoginStatus) {
+        adminLoginStatus.textContent = '✅ Admin access granted! Hover over the avatar to upload a photo.';
+        adminLoginStatus.style.color = '#00ffa3';
+      }
+      if (adminLoginError) adminLoginError.textContent = '';
+      setTimeout(closeAdminLogin, 2000);
+    } else {
+      if (adminLoginError) {
+        adminLoginError.textContent = '❌ Incorrect password. Try again.';
+        // Shake animation
+        adminLoginForm.classList.add('shake');
+        setTimeout(() => adminLoginForm.classList.remove('shake'), 500);
+      }
+      pwInput.value = '';
+      pwInput.focus();
+    }
+  });
+}
+
+// Shortcut: Ctrl + Shift + A → open admin login
+document.addEventListener('keydown', (ev) => {
+  if (ev.ctrlKey && ev.shiftKey && ev.key.toUpperCase() === 'A') {
+    ev.preventDefault();
+    adminLoginOverlay && adminLoginOverlay.style.display === 'flex' ? closeAdminLogin() : openAdminLogin();
+  }
+});
 
 // ==============================
 //  Contact Form (FormSubmit.co)

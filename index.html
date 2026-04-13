@@ -568,6 +568,32 @@
     </div>
   </div>
 
+  <!-- =================== ADMIN LOGIN MODAL (Avatar Upload) =================== -->
+  <div id="admin-login-overlay" class="admin-login-overlay" style="display:none;">
+    <div class="admin-login-panel glass-card">
+      <button class="admin-login-close" id="admin-login-close" title="Close">✕</button>
+      <div class="admin-login-header">
+        <span class="admin-login-icon">🔐</span>
+        <h3>Admin Access</h3>
+        <p>Enter the admin password to unlock photo upload.</p>
+      </div>
+      <form id="admin-login-form" autocomplete="off">
+        <div class="admin-login-field">
+          <label for="admin-pw-input">Password</label>
+          <input type="password" id="admin-pw-input" placeholder="Enter admin password…" required />
+        </div>
+        <div class="admin-login-error" id="admin-login-error"></div>
+        <div class="admin-login-status" id="admin-login-status"></div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center; margin-top:1rem;">
+          <span>Unlock</span> <span>🔓</span>
+        </button>
+      </form>
+      <div class="admin-login-hint">
+        <span>💡</span> Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>A</kbd> to open/close this panel
+      </div>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
