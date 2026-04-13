@@ -93,13 +93,18 @@ if (avatarUpload && avatarDisplay) {
 // ==============================
 //  Admin Auth (Avatar Upload)
 // ==============================
-// SHA-256 hash of your admin password.
-// Change ADMIN_PASSWORD_HASH to hash of your chosen password.
-// Default password is: admin@GB2025
-// To generate a new hash: open browser console and run:
-//   crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourPassword'))
-//     .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
-const ADMIN_PASSWORD_HASH = 'a3c2e5d1f0e4b8c7a9d2e1f3b6c8d0e4a5f2b7c9d3e6f1a0b4c8d2e5f9a1b3c7';
+// Password is verified using SHA-256 hashing (never stored in plain text).
+// ── DEFAULT PASSWORD: admin@GB2025 ──
+//
+// To set a NEW password in future:
+//   1. Open browser console (F12 → Console tab)
+//   2. Run this command (replace 'yourNewPassword' with your real one):
+//        crypto.subtle.digest('SHA-256', new TextEncoder().encode('yourNewPassword'))
+//          .then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+//   3. Copy the printed hash string
+//   4. Replace the ADMIN_PASSWORD_HASH value below with it
+//   5. Commit to Git: git add script.js && git commit -m "chore: update admin password hash"
+const ADMIN_PASSWORD_HASH = 'efaeec1e27c61dfc237ec4f4f4a8e89c632019859578e82e4d5aa3608522e60c';
 
 async function hashPassword(pw) {
   const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));

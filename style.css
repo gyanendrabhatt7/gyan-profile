@@ -1120,6 +1120,166 @@ footer {
 }
 
 /* ==============================
+   Admin Login Modal (Avatar Upload)
+   ============================== */
+.admin-login-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(5, 5, 16, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.admin-login-overlay.visible {
+  opacity: 1;
+}
+
+.admin-login-panel {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.2rem 2rem 1.8rem;
+  border-radius: var(--radius);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  box-shadow: 0 0 60px rgba(168, 85, 247, 0.15);
+  transform: translateY(0);
+  transition: var(--transition);
+}
+
+.admin-login-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.admin-login-close:hover {
+  background: rgba(255,255,255,0.12);
+  color: var(--text-primary);
+}
+
+.admin-login-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+}
+
+.admin-login-icon {
+  font-size: 2.4rem;
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.admin-login-header h3 {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.admin-login-header p {
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+}
+
+.admin-login-field {
+  margin-bottom: 0.5rem;
+}
+
+.admin-login-field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-login-field input {
+  width: 100%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: var(--font-body);
+  outline: none;
+  transition: var(--transition);
+}
+
+.admin-login-field input:focus {
+  border-color: var(--aurora-purple);
+  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.15);
+}
+
+.admin-login-error {
+  min-height: 1.4rem;
+  font-size: 0.83rem;
+  color: #ff6eb4;
+  margin-top: 0.4rem;
+}
+
+.admin-login-status {
+  min-height: 1.4rem;
+  font-size: 0.83rem;
+  color: var(--aurora-green);
+  margin-top: 0.3rem;
+}
+
+/* Shake animation on wrong password */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-8px); }
+  40%      { transform: translateX(8px); }
+  60%      { transform: translateX(-6px); }
+  80%      { transform: translateX(6px); }
+}
+.shake { animation: shake 0.4s ease; }
+
+.admin-login-hint {
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.admin-login-hint kbd {
+  display: inline-block;
+  padding: 2px 7px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  background: rgba(255,255,255,0.06);
+  font-size: 0.75rem;
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+}
+
+/* ==============================
    Responsive
    ============================== */
 @media (max-width: 900px) {
