@@ -104,7 +104,7 @@ if (avatarUpload && avatarDisplay) {
 //   3. Copy the printed hash string
 //   4. Replace the ADMIN_PASSWORD_HASH value below with it
 //   5. Commit to Git: git add script.js && git commit -m "chore: update admin password hash"
-const ADMIN_PASSWORD_HASH = 'efaeec1e27c61dfc237ec4f4f4a8e89c632019859578e82e4d5aa3608522e60c';
+const ADMIN_PASSWORD_HASH = 'dab6f348e6eefe9e805d9cbaaca90e0aa482b3cdfe7305eff6ea65f4c913b6ae';
 
 async function hashPassword(pw) {
   const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
