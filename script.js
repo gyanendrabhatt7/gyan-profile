@@ -61,25 +61,9 @@ const navObserver = new IntersectionObserver((entries) => {
 sections.forEach(s => navObserver.observe(s));
 
 // ==============================
-//  Avatar Photo Upload
+//  Avatar Photo Upload (Removed)
 // ==============================
-const avatarUpload  = document.getElementById('avatar-upload');
-const avatarDisplay = document.getElementById('avatar-display');
-
-if (avatarUpload && avatarDisplay) {
-  avatarUpload.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file || !file.type.startsWith('image/')) return;
-
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      // Clear the "GB" text and show the uploaded image
-      avatarDisplay.innerHTML = `<img src="${ev.target.result}" alt="Profile Photo" />`;
-      avatarDisplay.classList.add('has-photo');
-    };
-    reader.readAsDataURL(file);
-  });
-}
+// Using a permanent static image tag in index.html instead.
 
 // ==============================
 //  Contact Form (FormSubmit.co)
