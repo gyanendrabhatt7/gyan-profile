@@ -450,32 +450,6 @@ nav {
   border-radius: 50%;
 }
 
-/* Upload button overlay - hidden for normal users */
-.avatar-upload-label {
-  display: none;
-}
-
-.avatar-upload-label::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(2px);
-  opacity: 0;
-  transition: var(--transition);
-}
-
-.hero-avatar-wrap:hover .avatar-upload-label::before { opacity: 1; }
-
-.avatar-upload-icon {
-  position: relative;
-  z-index: 1;
-  font-size: 1.6rem;
-  line-height: 1;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-}
-
 
 .hero-avatar-bg {
   position: absolute;
